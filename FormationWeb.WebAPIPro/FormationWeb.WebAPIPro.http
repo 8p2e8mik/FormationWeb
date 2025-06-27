@@ -1,0 +1,6 @@
+@FormationWeb.WebAPIPro_HostAddress = http://localhost:5098
+
+GET {{FormationWeb.WebAPIPro_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
