@@ -23,14 +23,14 @@ public class UserService : IUserService<User>
     //     return await _userRepository.DeleteAsync(id);
     // }
 
-    public Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _userRepository.GetAllAsync();
     }
 
-    public Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _userRepository.GetByIdAsync(id);
     }
 
     public Task<User?> GetByNameAsync(string name)

@@ -38,14 +38,30 @@ public class UserRepository(MyDbContext context) : IUserContract<User>
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await context.Users.ToListAsync();
+        }
+        catch (DbUpdateException e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception($"{nameof(GetAllAsync)} : {e.Message}");
+        }
     }
 
-    public Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await context.Users.FindAsync(id);
+        }
+        catch (DbUpdateException e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception($"{nameof(GetAllAsync)} : {e.Message}");
+        }
     }
 
     public Task<User?> GetByNameAsync(string name)
@@ -57,6 +73,7 @@ public class UserRepository(MyDbContext context) : IUserContract<User>
     {
         try
         {
+            user.Id = Guid.NewGuid();
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
             return user;

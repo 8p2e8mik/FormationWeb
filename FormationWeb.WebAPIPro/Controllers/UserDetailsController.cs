@@ -5,23 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FormationWeb.WebAPIPro.Controllers;
 
-[Route("api/[controller]/[action]")]
 [ApiController]
-public class UserController : ControllerBase
+[Route("api/[controller]/[action]")]
+public class UserDetailsController(IUserDetailsService<UserDetails> service) : ControllerBase
 {
-    private readonly IUserService<User> _service;
-
-    public UserController(IUserService<User> service)
-    {
-        _service = service;
-    }
-
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> List()
+    public async Task<ActionResult<IEnumerable<UserDetails>>> List()
     {
         try
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await service.GetAllAsync());
         }
         catch (DbUpdateException e)
         {
@@ -38,14 +31,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> CreateUser([FromBody] User user)
+    public async Task<ActionResult<UserDetails>> Create([FromBody] UserDetails userDetails)
     {
-        // if (user is null)
-        //     return BadRequest(new { message = "User cannot be null" });
-
         try
         {
-            return Ok(await _service.CreateAsync(user));
+            return Ok(await service.CreateAsync(userDetails));
         }
         catch (DbUpdateException e)
         {
@@ -62,16 +52,16 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<User>> Retrieve(Guid id)
+    public async Task<ActionResult<UserDetails>> Retrieve(Guid id)
     {
         try
         {
-            var user = await _service.GetByIdAsync(id);
+            var userDetails = await service.GetByIdAsync(id);
 
-            if (user is null)
+            if (userDetails is null)
                 return NotFound();
 
-            return Ok(user);
+            return Ok(userDetails);
         }
         catch (DbUpdateException e)
         {
@@ -88,11 +78,16 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<User>> DeleteUser(Guid id)
+    public async Task<ActionResult<UserDetails>> Delete(Guid id)
     {
         try
         {
-            return Ok(await _service.DeleteAsync(id));
+            var userDeleted = await service.DeleteAsync(id);
+
+            if (userDeleted is null)
+                return NotFound();
+
+            return Ok(userDeleted);
         }
         catch (DbUpdateException e)
         {

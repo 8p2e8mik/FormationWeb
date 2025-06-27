@@ -17,6 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserContract<User>, UserRepository>();
     builder.Services.AddScoped<IUserService<User>, UserService>();
 
+    builder.Services.AddScoped<IUserDetailsContract<UserDetails>, UserDetailsRepository>();
+    builder.Services.AddScoped<IUserDetailsService<UserDetails>, UserDetailsService>();
+
+    
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
