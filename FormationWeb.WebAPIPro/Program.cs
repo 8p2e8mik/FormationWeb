@@ -1,3 +1,5 @@
+using FormationWeb.Application.Contracts;
+using FormationWeb.Application.Services;
 using FormationWeb.Domain.Contracts;
 using FormationWeb.Domain.Models;
 using FormationWeb.Repository.CommandQueries;
@@ -13,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
             contextOptBuilder => contextOptBuilder.MigrationsAssembly("FormationWeb.Repository")));
 
     builder.Services.AddScoped<IUserContract<User>, UserRepository>();
+    builder.Services.AddScoped<IUserService<User>, UserService>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
